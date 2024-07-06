@@ -28,6 +28,22 @@ namespace URLProtocol
                 string program = (string)Registry.GetValue($@"HKEY_CLASSES_ROOT\{protocol}\shell\open\command", "Target", null);
                 if (program != null)
                 {
+                    // 去除末尾的 "/" 也许 URL protocol 以网址调用时被添加的
+                    if (parameters.EndsWith("/"))
+                    {
+                        parameters = parameters.Substring(0, parameters.Length - 1);
+                    }
+                    // 存在测试参数
+                    int test = parameters.IndexOf("--cat-catch-test");
+                    if (test != -1)
+                    {
+                        parameters = parameters.Remove(test, "--cat-catch-test".Length);
+                        if (MessageBox.Show($"\"{program}\" {parameters}", "继续执行?", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
+                        {
+                            Shutdown();
+                            return;
+                        }
+                    }
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
                         FileName = program, // 程序
