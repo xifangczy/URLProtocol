@@ -1,3 +1,5 @@
+程序要求 [.NET Framework 4.8](https://go.microsoft.com/fwlink/?LinkId=2085155)
+
 写入协议名(不包含 "://") 点击 确认
 
 再选择需要调用的程序
