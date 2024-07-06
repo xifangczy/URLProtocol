@@ -9,11 +9,11 @@ namespace URLProtocol.Helpers
         {
             try
             {
-                using (RegistryKey key = Registry.ClassesRoot.OpenSubKey(protocol))
+                using (RegistryKey CurrentUserKey = Registry.ClassesRoot.OpenSubKey(protocol))
                 {
-                    if (key != null)
+                    if (CurrentUserKey != null)
                     {
-                        object urlProtocol = key.GetValue("URL Protocol");
+                        object urlProtocol = CurrentUserKey.GetValue("URL Protocol");
                         return urlProtocol != null;
                     }
                 }
@@ -29,24 +29,13 @@ namespace URLProtocol.Helpers
         public static string ExtractPathFromCommand(string command)
         {
             // 移除引号和参数，只保留路径
-            if (command.StartsWith("\""))
+            string firstPart = command.Split(' ')[0];
+            if (firstPart.StartsWith("\""))
             {
-                int endQuoteIndex = command.IndexOf('\"', 1);
-                if (endQuoteIndex > 0)
-                {
-                    return command.Substring(1, endQuoteIndex - 1);
-                }
+                return firstPart.Trim('\"');
             }
-            else
-            {
-                int spaceIndex = command.IndexOf(' ');
-                if (spaceIndex > 0)
-                {
-                    return command.Substring(0, spaceIndex);
-                }
-                return command;
-            }
-            return command;
+            return firstPart;
+
         }
         public static (string, string) ExtractProtocolAndRemove(string url)
         {

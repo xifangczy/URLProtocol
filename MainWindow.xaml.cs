@@ -1,7 +1,9 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
+using System.Windows.Input;
 using URLProtocol.Helpers;
 
 namespace URLProtocol
@@ -16,25 +18,27 @@ namespace URLProtocol
             InitializeComponent();
             CheckURLProtocols();
         }
+
+        string appPath; // 本程序绝对路径
+
         private void CheckURLProtocols()
         {
-            // 本程序绝对路径
-            string appPath = Process.GetCurrentProcess().MainModule.FileName;
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes"))
+            appPath = Process.GetCurrentProcess().MainModule.FileName;
+            using (RegistryKey CurrentUserKey = Registry.CurrentUser.OpenSubKey(@"Software\Classes"))
             {
-                if (key == null)
+                if (CurrentUserKey == null)
                 {
                     MessageBox.Show("无法打开注册表项。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                string[] protocolNames = key.GetSubKeyNames();
+                string[] protocolNames = CurrentUserKey.GetSubKeyNames();
                 foreach (string protocolName in protocolNames)
                 {
                     if (protocolName.Contains("."))
                     {
                         continue;
                     }
-                    using (RegistryKey protocolKey = key.OpenSubKey(protocolName))
+                    using (RegistryKey protocolKey = CurrentUserKey.OpenSubKey(protocolName))
                     {
                         if (protocolKey == null || protocolKey.GetValue("URL Protocol") == null)
                         {
@@ -93,22 +97,19 @@ namespace URLProtocol
                 return;
             }
 
-            // 当前程序绝对路径
-            string appPath = Process.GetCurrentProcess().MainModule.FileName;
-
             // 创建或打开注册表项
-            using (RegistryKey key = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{ProtocolName.Text}"))
+            using (RegistryKey CurrentUserKey = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{ProtocolName.Text}"))
             {
-                if (key == null)
+                if (CurrentUserKey == null)
                 {
                     MessageBox.Show("无法创建注册表项。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                key.SetValue("", $"URL:{ProtocolName.Text} Protocol");
-                key.SetValue("URL Protocol", "");
+                CurrentUserKey.SetValue("", $"URL:{ProtocolName.Text} Protocol");
+                CurrentUserKey.SetValue("URL Protocol", "");
 
                 // 创建 shell\open\command 子项
-                using (RegistryKey commandKey = key.CreateSubKey(@"shell\open\command"))
+                using (RegistryKey commandKey = CurrentUserKey.CreateSubKey(@"shell\open\command"))
                 {
                     if (commandKey != null)
                     {
@@ -117,7 +118,7 @@ namespace URLProtocol
                     }
                 }
                 Cancel.IsEnabled = true;
-                MessageBox.Show("URL 协议注册成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("URL 协议添加成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -125,30 +126,34 @@ namespace URLProtocol
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Title = "选择文件",
-                Filter = "所有文件 (*.*)|*.*"
+                Title = "选择目标可执行程序",
+                Filter = "所有文件 (*.*)|*.*",
+                InitialDirectory = Directory.GetCurrentDirectory()
             };
             if (openFileDialog.ShowDialog() == true)
             {
-                string selectedFilePath = openFileDialog.FileName;
-                TargetProgram.Text = selectedFilePath;
+                if(openFileDialog.FileName == appPath)
+                {
+                    MessageBox.Show("不能选择自己", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                TargetProgram.Text = openFileDialog.FileName;
             }
-
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Classes", writable: true))
+            using (RegistryKey CurrentUserKey = Registry.CurrentUser.OpenSubKey("Software\\Classes", writable: true))
             {
-                if (key == null)
+                if (CurrentUserKey == null)
                 {
                     MessageBox.Show("无法打开注册表项。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 // 检查协议是否存在
-                if (key.OpenSubKey(ProtocolName.Text) != null)
+                if (CurrentUserKey.OpenSubKey(ProtocolName.Text) != null)
                 {
-                    key.DeleteSubKeyTree(ProtocolName.Text);
+                    CurrentUserKey.DeleteSubKeyTree(ProtocolName.Text);
                     ProtocolName.Text = "";
                     TargetProgram.Text = "";
                     MessageBox.Show("URL 协议删除成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);

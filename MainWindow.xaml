@@ -5,15 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:URLProtocol"
         mc:Ignorable="d"
-        Title="注册 URL Protocol" Height="450" Width="800"
-        WindowStartupLocation="CenterScreen">
-    <Grid>
-        <TextBox x:Name="ProtocolName" HorizontalAlignment="Left" Margin="189,150,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="280" Height="25" FontSize="20"/>
-        <TextBox x:Name="TargetProgram" HorizontalAlignment="Left" Margin="190,216,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Height="25" Width="478" FontSize="20"/>
+        Title="添加 URL Protocol" Height="400" Width="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize">
+    <Grid x:Name="Logo">
+        <TextBox x:Name="ProtocolName" HorizontalAlignment="Left" Margin="294,164,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="280" Height="25" FontSize="20"/>
+        <TextBox x:Name="TargetProgram" HorizontalAlignment="Left" Margin="104,216,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Height="25" Width="564" FontSize="20" IsReadOnly="true"/>
         <Button x:Name="OpenFile" Content="选择目标程序" HorizontalAlignment="Left" Margin="673,216,0,0" VerticalAlignment="Top" Height="25" Width="86" Click="OpenFile_Click"/>
-        <Button x:Name="OK" Content="注册" HorizontalAlignment="Left" Margin="299,336,0,0" VerticalAlignment="Top" Height="60" Width="80" Click="OK_Click" FontSize="20"/>
-        <Button x:Name="Cancel" Content="删除" HorizontalAlignment="Left" Margin="429,336,0,0" VerticalAlignment="Top" Height="60" Width="80" Click="Cancel_Click" FontSize="20" IsEnabled="False"/>
-        <Label Content="协议名" HorizontalAlignment="Left" Margin="104,143,0,0" VerticalAlignment="Top" Width="80" Height="40" FontSize="20"/>
-        <Label Content="目标程序" HorizontalAlignment="Left" Margin="85,209,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="20"/>
+        <Button x:Name="OK" Content="添加" HorizontalAlignment="Left" Margin="304,282,0,0" VerticalAlignment="Top" Height="60" Width="80" Click="OK_Click" FontSize="20"/>
+        <Button x:Name="Cancel" Content="删除" HorizontalAlignment="Left" Margin="434,282,0,0" VerticalAlignment="Top" Height="60" Width="80" Click="Cancel_Click" FontSize="20" IsEnabled="False"/>
+        <Label Content="协议名" HorizontalAlignment="Left" Margin="214,156,0,0" VerticalAlignment="Top" Width="80" Height="40" FontSize="20"/>
+        <Label Content="目标程序" HorizontalAlignment="Left" Margin="10,208,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="20" RenderTransformOrigin="0.275,0.479"/>
+        <Image HorizontalAlignment="Center" Height="100" Margin="0,22,0,0" VerticalAlignment="Top" Width="100" Source="/cat.ico"/>
     </Grid>
 </Window>
