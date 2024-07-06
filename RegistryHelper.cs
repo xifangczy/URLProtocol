@@ -7,13 +7,17 @@ namespace URLProtocol.Helpers
     {
         public static bool IsProtocolRegistered(string protocol)
         {
-            // 在注册表中查找协议
-            string registryKey = $@"HKEY_CLASSES_ROOT\{protocol}";
-
             try
             {
-                object keyValue = Registry.GetValue(registryKey, string.Empty, null);
-                return keyValue != null;
+                using (RegistryKey key = Registry.ClassesRoot.OpenSubKey(protocol))
+                {
+                    if (key != null)
+                    {
+                        object urlProtocol = key.GetValue("URL Protocol");
+                        return urlProtocol != null;
+                    }
+                }
+                return false;
             }
             catch (Exception ex)
             {
@@ -61,7 +65,7 @@ namespace URLProtocol.Helpers
 
         public static bool CheckProtocolName(string ProtocolName)
         {
-            char[] invalidChars = { ':', '/', '\\' };
+            char[] invalidChars = { ':', '/', '\\', '.' };
             foreach (char c in invalidChars)
             {
                 if (ProtocolName.IndexOf(c) >= 0)

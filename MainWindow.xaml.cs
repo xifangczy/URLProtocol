@@ -18,36 +18,47 @@ namespace URLProtocol
         }
         private void CheckURLProtocols()
         {
+            // 本程序绝对路径
             string appPath = Process.GetCurrentProcess().MainModule.FileName;
-            string protocolsPath = @"Software\Classes";
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(protocolsPath))
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes"))
             {
                 if (key == null)
                 {
-                    MessageBox.Show("无法创建注册表项。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("无法打开注册表项。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 string[] protocolNames = key.GetSubKeyNames();
                 foreach (string protocolName in protocolNames)
                 {
-                    using (RegistryKey commandKey = key.OpenSubKey($@"{protocolName}\shell\open\command"))
+                    if (protocolName.Contains("."))
                     {
-                        if (commandKey == null)
+                        continue;
+                    }
+                    using (RegistryKey protocolKey = key.OpenSubKey(protocolName))
+                    {
+                        if (protocolKey == null || protocolKey.GetValue("URL Protocol") == null)
                         {
                             continue;
                         }
-                        string commandValue = commandKey.GetValue("") as string;
-                        if (string.IsNullOrEmpty(commandValue))
+                        using (RegistryKey commandKey = protocolKey.OpenSubKey(@"shell\open\command"))
                         {
-                            continue;
-                        }
-                        string commandPath = RegistryHelper.ExtractPathFromCommand(commandValue);
-                        if (string.Equals(commandPath, appPath, StringComparison.OrdinalIgnoreCase))
-                        {
-                            ProtocolName.Text = protocolName;
-                            TargetProgram.Text = commandKey.GetValue("Target") as string;
-                            Cancel.IsEnabled = true;
-                            break;
+                            if (commandKey == null)
+                            {
+                                continue;
+                            }
+                            string commandValue = commandKey.GetValue("") as string;
+                            if (string.IsNullOrEmpty(commandValue))
+                            {
+                                continue;
+                            }
+                            string commandPath = RegistryHelper.ExtractPathFromCommand(commandValue);
+                            if (string.Equals(commandPath, appPath, StringComparison.OrdinalIgnoreCase))
+                            {
+                                ProtocolName.Text = protocolName;
+                                TargetProgram.Text = commandKey.GetValue("Target") as string;
+                                Cancel.IsEnabled = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -56,11 +67,32 @@ namespace URLProtocol
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            if (TargetProgram.Text == "")
+            // 验证协议名
+            if (ProtocolName.Text.EndsWith("://"))
             {
-                MessageBox.Show("别闹了!", "检查结果", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ProtocolName.Text = ProtocolName.Text.Substring(0, ProtocolName.Text.Length - 3);
+            }
+            if (ProtocolName.Text == "")
+            {
+                MessageBox.Show("协议名不能为空!", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            if (RegistryHelper.CheckProtocolName(ProtocolName.Text))
+            {
+                MessageBox.Show("含有非法字符! 不允许包含 \" / . \\ :\"", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (RegistryHelper.IsProtocolRegistered(ProtocolName.Text))
+            {
+                MessageBox.Show($"'{ProtocolName.Text}' 已被占用。", "检查结果", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            if (TargetProgram.Text == "")
+            {
+                MessageBox.Show("目标程序为空!", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             // 当前程序绝对路径
             string appPath = Process.GetCurrentProcess().MainModule.FileName;
 
@@ -85,32 +117,7 @@ namespace URLProtocol
                     }
                 }
                 Cancel.IsEnabled = true;
-                OK.IsEnabled = false;
                 MessageBox.Show("URL 协议注册成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-
-        private void CheckProtocolName_Click(object sender, RoutedEventArgs e)
-        {
-            if (ProtocolName.Text == "")
-            {
-                MessageBox.Show("协议名不能为空!", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            if (RegistryHelper.CheckProtocolName(ProtocolName.Text))
-            {
-                MessageBox.Show("含有非法字符! 不允许包含 \"://\"", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            if (RegistryHelper.IsProtocolRegistered(ProtocolName.Text))
-            {
-                Cancel.IsEnabled = true;
-                MessageBox.Show($"协议 '{ProtocolName.Text}' 已经被注册成 URL Protocol。", "检查结果", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-            else
-            {
-                OpenFile.IsEnabled = true;
             }
         }
 
@@ -125,7 +132,6 @@ namespace URLProtocol
             {
                 string selectedFilePath = openFileDialog.FileName;
                 TargetProgram.Text = selectedFilePath;
-                OK.IsEnabled = true;
             }
 
         }
@@ -136,7 +142,7 @@ namespace URLProtocol
             {
                 if (key == null)
                 {
-                    MessageBox.Show("无法创建注册表项。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("无法打开注册表项。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 // 检查协议是否存在

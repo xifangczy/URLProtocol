@@ -19,30 +19,24 @@ namespace URLProtocol
             // 检查命令行参数
             if (e.Args.Length > 0)
             {
-                // 有参数，弹出参数列表
-                //string test = string.Join(" | ", e.Args);
-                //MessageBox.Show(test);
+                string decodedUrl = HttpUtility.UrlDecode(e.Args[0]);
 
-                string encodedUrl = e.Args[0];
-                string decodedUrl = HttpUtility.UrlDecode(encodedUrl);
-                // 查找第一个 "://" 的位置
-                int protocolEndIndex = decodedUrl.IndexOf("://");
+                // 解析出协议名 和 参数
                 (string protocol, string parameters) = RegistryHelper.ExtractProtocolAndRemove(decodedUrl);
 
-                string key = $@"HKEY_CLASSES_ROOT\{protocol}\shell\open\command";
-                string program = (string)Registry.GetValue(key, "Target", null);
+                // 根据协议名查找到 目标程序 加上参数运行
+                string program = (string)Registry.GetValue($@"HKEY_CLASSES_ROOT\{protocol}\shell\open\command", "Target", null);
                 if (program != null)
                 {
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.FileName = program; // 程序的名称
-                    startInfo.Arguments = parameters;
-                    startInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        FileName = program, // 程序
+                        Arguments = parameters, // 参数
+                        WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory    // 调整工作目录
+                    };
                     Process.Start(startInfo);
-                    //MessageBox.Show(program);
                 }
-
-                //MessageBox.Show(protocol + " | " + parameters);
-                // 关闭应用程序
+                // 关闭本应用程序
                 Shutdown();
             }
             else
