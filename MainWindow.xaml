@@ -1,0 +1,20 @@
+﻿<Window x:Class="URLProtocol.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:URLProtocol"
+        mc:Ignorable="d"
+        Title="注册 URL Protocol" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBox x:Name="ProtocolName" HorizontalAlignment="Left" Margin="189,150,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="280" Height="25" FontSize="20"/>
+        <TextBox x:Name="TargetProgram" HorizontalAlignment="Left" Margin="190,216,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Height="25" Width="478" FontSize="20"/>
+        <Button x:Name="CheckProtocolName" Content="确认" HorizontalAlignment="Left" Margin="485,150,0,0" VerticalAlignment="Top" Height="25" Width="50" Click="CheckProtocolName_Click"/>
+        <Button x:Name="OpenFile" Content="浏览" HorizontalAlignment="Left" Margin="673,216,0,0" VerticalAlignment="Top" Height="25" Width="50" IsEnabled="False" Click="OpenFile_Click"/>
+        <Button x:Name="OK" Content="注册" HorizontalAlignment="Left" Margin="299,336,0,0" VerticalAlignment="Top" Height="60" Width="80" Click="OK_Click" FontSize="20" IsEnabled="False"/>
+        <Button x:Name="Cancel" Content="删除" HorizontalAlignment="Left" Margin="429,336,0,0" VerticalAlignment="Top" Height="60" Width="80" Click="Cancel_Click" FontSize="20" IsEnabled="False"/>
+        <Label Content="协议名" HorizontalAlignment="Left" Margin="104,143,0,0" VerticalAlignment="Top" Width="80" Height="40" FontSize="20"/>
+        <Label Content="目标程序" HorizontalAlignment="Left" Margin="85,209,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="20"/>
+    </Grid>
+</Window>
