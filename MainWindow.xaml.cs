@@ -97,6 +97,11 @@ namespace URLProtocol
                 MessageBox.Show("协议名不能为空!", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            if (RegistryHelper.CheckProtocolName(ProtocolName.Text))
+            {
+                MessageBox.Show("含有非法字符! 不允许包含 \"://\"", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             if (RegistryHelper.IsProtocolRegistered(ProtocolName.Text))
             {
                 Cancel.IsEnabled = true;

@@ -58,5 +58,18 @@ namespace URLProtocol.Helpers
             }
             return (null, url); // 如果没有找到 "://"，返回原始字符串和 null 协议名
         }
+
+        public static bool CheckProtocolName(string ProtocolName)
+        {
+            char[] invalidChars = { ':', '/', '\\' };
+            foreach (char c in invalidChars)
+            {
+                if (ProtocolName.IndexOf(c) >= 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
