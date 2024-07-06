@@ -1,4 +1,4 @@
-程序要求 [.NET Framework 4.8](https://go.microsoft.com/fwlink/?LinkId=2085155)
+程序要求 [.NET Framework 4.7.2](https://go.microsoft.com/fwlink/?LinkId=863262)
 
 写入协议名(不包含 "://") 点击 确认
 
