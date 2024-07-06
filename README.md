@@ -1,1 +1,9 @@
-hello world!
+程序要求 [.NET Framework 4.8](https://go.microsoft.com/fwlink/?LinkId=2085155)
+
+写入协议名(不包含 "://") 点击 确认
+
+再选择需要调用的程序
+
+点击 注册 完成。
+
+URLProtocol.exe 程序本身 注册后就不能更改文件位置 否则无法成功调用。
