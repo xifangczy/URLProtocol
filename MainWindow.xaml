@@ -9,13 +9,15 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
     <Grid x:Name="Logo">
-        <TextBox x:Name="ProtocolName" HorizontalAlignment="Left" Margin="294,164,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="280" Height="25" FontSize="20"/>
-        <TextBox x:Name="TargetProgram" HorizontalAlignment="Left" Margin="104,216,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Height="25" Width="564" FontSize="20" IsReadOnly="true"/>
-        <Button x:Name="OpenFile" Content="选择目标程序" HorizontalAlignment="Left" Margin="673,216,0,0" VerticalAlignment="Top" Height="25" Width="86" Click="OpenFile_Click"/>
-        <Button x:Name="OK" Content="添加" HorizontalAlignment="Left" Margin="304,282,0,0" VerticalAlignment="Top" Height="60" Width="80" Click="OK_Click" FontSize="20"/>
-        <Button x:Name="Cancel" Content="删除" HorizontalAlignment="Left" Margin="434,282,0,0" VerticalAlignment="Top" Height="60" Width="80" Click="Cancel_Click" FontSize="20" IsEnabled="False"/>
-        <Label Content="协议名" HorizontalAlignment="Left" Margin="214,156,0,0" VerticalAlignment="Top" Width="80" Height="40" FontSize="20"/>
-        <Label Content="目标程序" HorizontalAlignment="Left" Margin="10,208,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="20" RenderTransformOrigin="0.275,0.479"/>
-        <Image HorizontalAlignment="Center" Height="100" Margin="0,22,0,0" VerticalAlignment="Top" Width="100" Source="/cat.ico"/>
+        <TextBox x:Name="ProtocolName" HorizontalAlignment="Left" Margin="245,143,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="280" Height="25" FontSize="20" TextChanged="ProtocolName_TextChanged"/>
+        <TextBox x:Name="TargetProgram" HorizontalAlignment="Left" Margin="104,187,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Height="25" Width="564" FontSize="20" IsReadOnly="true"/>
+        <Button x:Name="OpenFile" Content="选择目标程序" HorizontalAlignment="Left" Margin="673,187,0,0" VerticalAlignment="Top" Height="25" Width="86" Click="OpenFile_Click"/>
+        <Button x:Name="OK" Content="添加/更新" HorizontalAlignment="Left" Margin="284,282,0,0" VerticalAlignment="Top" Height="60" Width="100" Click="OK_Click" FontSize="20"/>
+        <Button x:Name="Cancel" Content="删除" HorizontalAlignment="Left" Margin="434,282,0,0" VerticalAlignment="Top" Height="60" Width="80" Click="Cancel_Click" FontSize="20"/>
+        <Label Content="协议名" HorizontalAlignment="Left" Margin="160,136,0,0" VerticalAlignment="Top" Width="80" Height="40" FontSize="20" RenderTransformOrigin="0.525,0.977"/>
+        <Label Content="目标程序" HorizontalAlignment="Left" Margin="10,179,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="20" RenderTransformOrigin="0.275,0.479"/>
+        <Image HorizontalAlignment="Center" Height="100" Margin="0,9,0,0" VerticalAlignment="Top" Width="100" Source="/cat.ico"/>
+        <ComboBox x:Name="AllProtocol" HorizontalAlignment="Left" Margin="530,145,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="AllProtocol_SelectionChanged"/>
+        <TextBlock x:Name="Tips" HorizontalAlignment="Left" Margin="17,236,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="12"/>
     </Grid>
 </Window>
