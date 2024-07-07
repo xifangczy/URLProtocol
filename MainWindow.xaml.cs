@@ -233,5 +233,9 @@ namespace URLProtocol
             isUpdatingProtocol = false;
             return;
         }
+        private void Logo_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("喵~", "噗噗", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }
