@@ -125,11 +125,12 @@ namespace URLProtocol
                 {
                     if (commandKey != null)
                     {
-                        commandKey.SetValue("", $"\"{appPath}\" \"%1\"");
+                        string value = $"\"{appPath}\" \"%1\"";
+                        commandKey.SetValue("", value);
                         commandKey.SetValue("Target", TargetProgram.Text);
-                        ProtocolsDict[ProtocolName.Text] = new Protocols(appPath, commandKey.GetValue("Target") as string); // 添加到字典
+                        ProtocolsDict[ProtocolName.Text] = new Protocols(value, commandKey.GetValue("Target") as string); // 添加到字典
                         AllProtocol.ItemsSource = ProtocolsDict.Keys.ToList();  // 刷新下拉菜单
-                        Tips.Text = "调用参数: " + appPath;
+                        Tips.Text = $"调用参数: {value}";
                         MessageBox.Show("URL 协议添加成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
@@ -186,13 +187,17 @@ namespace URLProtocol
                     ProtocolName.Text = "";
                     TargetProgram.Text = "";
                     Tips.Text = "";
-                    MessageBox.Show("URL 协议删除成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    //MessageBox.Show("URL 协议删除成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
 
         private void AllProtocol_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+            if (isUpdatingProtocol)
+            {
+                return;
+            }
             if (AllProtocol.SelectedIndex <= 0)
             {
                 ProtocolName.Text = "";
@@ -202,9 +207,9 @@ namespace URLProtocol
             }
             isUpdatingProtocol = true;  // 防止触发 ProtocolName_TextChanged
             ProtocolName.Text = AllProtocol.SelectedItem as string; // 填写ProtocolName
+            isUpdatingProtocol = false;
             TargetProgram.Text = ProtocolsDict[AllProtocol.SelectedItem.ToString()].Target; // 从字典里查找 填写TargetProgram
             Tips.Text = "调用参数: " + ProtocolsDict[AllProtocol.SelectedItem.ToString()].Value; // 提示协议执行程序 字典里查找 填写Tips
-            isUpdatingProtocol = false;
         }
 
         private void ProtocolName_TextChanged(object sender, TextChangedEventArgs e)
@@ -223,7 +228,9 @@ namespace URLProtocol
             }
             Tips.Text = "";
             TargetProgram.Text = "";
+            isUpdatingProtocol = true;
             AllProtocol.SelectedIndex = 0;
+            isUpdatingProtocol = false;
             return;
         }
     }
