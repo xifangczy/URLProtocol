@@ -5,17 +5,18 @@
         // 提取协议名和去除协议名后的 URL
         public static (string, string) ExtractProtocolAndRemove(string url)
         {
-            // 查找第一个 "://" 的位置
-            int protocolEndIndex = url.IndexOf("://");
+            int protocolEndIndex = url.IndexOf(":");
             if (protocolEndIndex != -1)
             {
-                // 提取协议名
                 string protocol = url.Substring(0, protocolEndIndex);
-                // 去除协议名和 "://"
-                string urlWithoutProtocol = url.Substring(protocolEndIndex + 3);
-                return (protocol, urlWithoutProtocol);
+                string parameters = url.Substring(protocolEndIndex + 1);
+                if (parameters.StartsWith("//"))
+                {
+                    parameters = parameters.Substring(2);
+                }
+                return (protocol, parameters);
             }
-            return (null, url); // 如果没有找到 "://"，返回原始字符串和 null 协议名
+            return (null, url);
         }
         // 检查协议名是否包含无效字符
         public static bool CheckProtocolName(string ProtocolName)
