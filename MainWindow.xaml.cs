@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -25,6 +26,7 @@ namespace URLProtocol
         private bool isUpdatingProtocol = false;    // 防止下拉菜单触发 ProtocolName_TextChanged
         private string appPath; // 本程序绝对路径
         private static Dictionary<string, Protocols> ProtocolsDict; // 储存所有已注册的协议
+        private static bool ShowAll = false;    // 默认不显示所有协议
 
         public MainWindow()
         {
@@ -34,7 +36,7 @@ namespace URLProtocol
 
         private void CheckURLProtocols()
         {
-            ProtocolsDict = new Dictionary<string, Protocols> { { "所有已注册协议...", new Protocols("") } };  // 设置下拉菜单提示
+            ProtocolsDict = new Dictionary<string, Protocols> { { I18n("AllProtocols"), new Protocols("") } };  // 设置下拉菜单提示
             appPath = Process.GetCurrentProcess().MainModule.FileName;  // 获取本程序绝对路径
 
             // 打开HKEY_CLASSES_ROOT
@@ -43,7 +45,7 @@ namespace URLProtocol
                 if (ClassesRootKey == null)
                 {
 
-                    MessageBox.Show("无法打开注册表项。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(I18n("UnableOpeningRegistry"), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 string[] protocolNames = ClassesRootKey.GetSubKeyNames();
@@ -70,7 +72,12 @@ namespace URLProtocol
                             {
                                 continue;
                             }
-                            ProtocolsDict[protocolName] = new Protocols(commandValue, commandKey.GetValue("Target") as string);
+                            string Target = commandKey.GetValue("Target") as string;
+                            if(!ShowAll && Target == null)
+                            {
+                                continue;
+                            }
+                            ProtocolsDict[protocolName] = new Protocols(commandValue, Target);
                         }
                     }
                 }
@@ -89,22 +96,22 @@ namespace URLProtocol
             }
             if (ProtocolName.Text == "")
             {
-                MessageBox.Show("协议名不能为空!", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(I18n("ProtocolNameEmpty"), I18n("Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             if (RegistryHelper.CheckProtocolName(ProtocolName.Text))
             {
-                MessageBox.Show("含有非法字符! 不允许包含 \" / . \\ :\"", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(I18n("IllegalCharacters") + " \" / . \\ :\"", I18n("Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             if (TargetProgram.Text == "")
             {
-                MessageBox.Show("目标程序为空!", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(I18n("TargetEmpty"), I18n("Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             if (ProtocolsDict.ContainsKey(ProtocolName.Text))
             {
-                if (MessageBox.Show($"确认更改？", "确认更新", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                if (MessageBox.Show(I18n("ConfirmChange"), I18n("Information"), MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
                 {
                     return;
                 }
@@ -114,7 +121,7 @@ namespace URLProtocol
             {
                 if (CurrentUserKey == null)
                 {
-                    MessageBox.Show("无法创建注册表项。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(I18n("UnableOpeningRegistry"), I18n("Warning"), MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 CurrentUserKey.SetValue("", $"URL:{ProtocolName.Text} Protocol");
@@ -130,12 +137,12 @@ namespace URLProtocol
                         commandKey.SetValue("Target", TargetProgram.Text);
                         ProtocolsDict[ProtocolName.Text] = new Protocols(value, commandKey.GetValue("Target") as string); // 添加到字典
                         AllProtocol.ItemsSource = ProtocolsDict.Keys.ToList();  // 刷新下拉菜单
-                        Tips.Text = $"调用参数: {value}";
-                        MessageBox.Show("URL 协议添加成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                        Tips.Text = I18n("Parameters") + $": {value}";
+                        MessageBox.Show(I18n("AddedSuccessfully"), I18n("Information"), MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
                     {
-                        MessageBox.Show("无法创建注册表项。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(I18n("UnableOpeningRegistry"), I18n("Warning"), MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -145,15 +152,15 @@ namespace URLProtocol
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Title = "选择目标可执行程序",
-                Filter = "所有文件 (*.*)|*.*",
+                Title = I18n("SelectExecutable"),
+                Filter = I18n("AllFiles") + " (*.*)|*.*",
                 InitialDirectory = Directory.GetCurrentDirectory()
             };
             if (openFileDialog.ShowDialog() == true)
             {
                 if (openFileDialog.FileName == appPath)
                 {
-                    MessageBox.Show("不能选择自己", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(I18n("Oneself"), I18n("Warning"), MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 TargetProgram.Text = openFileDialog.FileName;
@@ -164,22 +171,22 @@ namespace URLProtocol
         {
             if (ProtocolName.Text == "")
             {
-                MessageBox.Show("协议名不能为空!", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(I18n("ProtocolNameEmpty"), I18n("Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             using (RegistryKey ClassesRootKey = Registry.ClassesRoot)
             {
                 if (ClassesRootKey == null)
                 {
-                    MessageBox.Show("无法打开注册表项。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(I18n("UnableOpeningRegistry"), I18n("Warning"), MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 if (ClassesRootKey.OpenSubKey(ProtocolName.Text) == null)
                 {
-                    MessageBox.Show("协议不存在。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(I18n("ProtocolNotExist"), I18n("Warning"), MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                if (MessageBox.Show("确认删除?", "确认删除", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                if (MessageBox.Show(I18n("ConfirmDeletion"), I18n("ConfirmDeletion"), MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
                     ClassesRootKey.DeleteSubKeyTree(ProtocolName.Text);
                     ProtocolsDict.Remove(ProtocolName.Text);    // 从字典里删除
@@ -187,7 +194,6 @@ namespace URLProtocol
                     ProtocolName.Text = "";
                     TargetProgram.Text = "";
                     Tips.Text = "";
-                    //MessageBox.Show("URL 协议删除成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
@@ -209,7 +215,7 @@ namespace URLProtocol
             ProtocolName.Text = AllProtocol.SelectedItem as string; // 填写ProtocolName
             isUpdatingProtocol = false;
             TargetProgram.Text = ProtocolsDict[AllProtocol.SelectedItem.ToString()].Target; // 从字典里查找 填写TargetProgram
-            Tips.Text = "调用参数: " + ProtocolsDict[AllProtocol.SelectedItem.ToString()].Value; // 提示协议执行程序 字典里查找 填写Tips
+            Tips.Text = I18n("Parameters") + ": " + ProtocolsDict[AllProtocol.SelectedItem.ToString()].Value; // 提示协议执行程序 字典里查找 填写Tips
         }
 
         private void ProtocolName_TextChanged(object sender, TextChangedEventArgs e)
@@ -223,7 +229,7 @@ namespace URLProtocol
             {
                 AllProtocol.SelectedItem = ProtocolName.Text;
                 TargetProgram.Text = ProtocolsDict[AllProtocol.SelectedItem.ToString()].Target;
-                Tips.Text = "调用参数: " + ProtocolsDict[AllProtocol.SelectedItem.ToString()].Value;
+                Tips.Text = I18n("Parameters") + ": " + ProtocolsDict[AllProtocol.SelectedItem.ToString()].Value;
                 return;
             }
             Tips.Text = "";
@@ -236,6 +242,37 @@ namespace URLProtocol
         private void Logo_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("喵~", "噗噗", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void SetLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(SetLanguage.SelectedIndex == 0)
+            {
+                return;
+            }
+            App app = (App)Application.Current;
+            ComboBoxItem selectedItem = SetLanguage.SelectedItem as ComboBoxItem;
+            app.ChangeLanguage(selectedItem.Tag.ToString());
+
+            // 切换下拉菜单提示语言
+            var firstItem = ProtocolsDict.First();
+            Protocols currentProtocols = firstItem.Value;
+            ProtocolsDict.Remove(firstItem.Key);
+            ProtocolsDict.Add(I18n("AllProtocols"), currentProtocols);
+            int index = AllProtocol.SelectedIndex;
+            AllProtocol.ItemsSource = ProtocolsDict.Keys.ToList();
+            AllProtocol.SelectedIndex = index;
+        }
+
+        private string I18n(string key)
+        {
+            return (string)Application.Current.FindResource(key);
+        }
+
+        private void ShowAllCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowAll = !ShowAll;
+            CheckURLProtocols();
         }
     }
 }

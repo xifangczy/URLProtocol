@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Diagnostics;
+using System.Globalization;
+using System.Threading;
 using System.Web;
 using System.Windows;
 using URLProtocol.Helpers;
@@ -15,6 +17,9 @@ namespace URLProtocol
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            // 多语言 获取电脑语言
+            ChangeLanguage(CultureInfo.InstalledUICulture.Name);
 
             // 检查命令行参数
             if (e.Args.Length > 0)
@@ -38,7 +43,7 @@ namespace URLProtocol
                     if (test != -1)
                     {
                         parameters = parameters.Remove(test, "--cat-catch-test".Length);
-                        if (MessageBox.Show($"\"{program}\" {parameters}", "继续执行?", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
+                        if (MessageBox.Show($"\"{program}\" {parameters}", "Continue?", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
                         {
                             Shutdown();
                             return;
@@ -61,6 +66,27 @@ namespace URLProtocol
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
             }
+        }
+
+        public void ChangeLanguage(string language)
+        {
+            ResourceDictionary dict = new ResourceDictionary();
+            switch (language)
+            {
+                case "zh-CN":
+                    dict.Source = new Uri("i18n/zh_CN.xaml", UriKind.Relative);
+                    break;
+                case "en-US":
+                    dict.Source = new Uri("i18n/en_US.xaml", UriKind.Relative);
+                    break;
+                default:
+                    dict.Source = new Uri("i18n/en_US.xaml", UriKind.Relative);
+                    break;
+            }
+
+            // 清除现有资源字典并添加新的资源字典
+            this.Resources.MergedDictionaries.Clear();
+            this.Resources.MergedDictionaries.Add(dict);
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿<Window x:Class="URLProtocol.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="添加 URL Protocol" Height="400" Width="800"
+        Title="{DynamicResource Title}" Height="400" Width="800"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
     <Window.Resources>
-        <sys:Double x:Key="GlobalFontSize">16</sys:Double>
-        
+        <sys:Double x:Key="GlobalFontSize">14</sys:Double>
+
         <!-- 定义TextBox样式 -->
         <Style x:Key="CustomTextBoxStyle" TargetType="TextBox">
             <Setter Property="Margin" Value="10,0,10,0"/>
@@ -48,31 +48,41 @@
             <Image Source="cat.ico"/>
         </Border>
 
-        <TextBlock Text="协议名" Grid.Row="1" Grid.Column="0" Style="{StaticResource CustomTextBlockStyle}"/>
+        <TextBlock Text="{DynamicResource ProtocolName}" Grid.Row="1" Grid.Column="0" Style="{StaticResource CustomTextBlockStyle}"/>
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.7*"/>
                 <ColumnDefinition Width="0.3*"/>
             </Grid.ColumnDefinitions>
             <TextBox Name="ProtocolName" Style="{StaticResource CustomTextBoxStyle}" TextChanged="ProtocolName_TextChanged"/>
-            <ComboBox Name="AllProtocol" Margin="10,0,0,0" Grid.Column="1" SelectionChanged="AllProtocol_SelectionChanged" FontSize="16"/>
+            <ComboBox Name="AllProtocol" Margin="10,0,0,0" Grid.Column="1" SelectionChanged="AllProtocol_SelectionChanged" FontSize="12"/>
         </Grid>
 
-        <TextBlock Text="目标程序" Grid.Row="2" Grid.Column="0" Style="{StaticResource CustomTextBlockStyle}"/>
+        <TextBlock Text="{DynamicResource TargetProgram}" Grid.Row="2" Grid.Column="0" Style="{StaticResource CustomTextBlockStyle}"/>
         <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.7*"/>
                 <ColumnDefinition Width="0.3*"/>
             </Grid.ColumnDefinitions>
             <TextBox Name="TargetProgram" Style="{StaticResource CustomTextBoxStyle}" IsReadOnly="True"/>
-            <Button x:Name="OpenFile" Click="OpenFile_Click" Content="选择目标程序" Width="120" Margin="10,0,0,0" Grid.Column="1" FontSize="{StaticResource GlobalFontSize}"/>
+            <Button x:Name="OpenFile" Click="OpenFile_Click" Content="{DynamicResource SelectTargetProgram}" Width="120" Margin="10,0,0,0" Grid.Column="1" FontSize="{StaticResource GlobalFontSize}"/>
         </Grid>
 
         <TextBlock Name="Tips" Text="提示信息" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Style="{StaticResource CustomTextBlockStyle}"/>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="4" Grid.ColumnSpan="3" Margin="10,20,10,30">
-            <Button x:Name="OK" Click="OK_Click" Content="添加/更新" Style="{StaticResource CustomButtonStyle}"/>
-            <Button x:Name="Cancel" Click="Cancel_Click" Content="删除" Style="{StaticResource CustomButtonStyle}"/>
+            <Button x:Name="OK" Click="OK_Click" Content="{DynamicResource AddOrUpdate}" Style="{StaticResource CustomButtonStyle}"/>
+            <Button x:Name="Cancel" Click="Cancel_Click" Content="{DynamicResource Delete}" Style="{StaticResource CustomButtonStyle}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="4" Grid.ColumnSpan="3" Margin="10,20,10,30">
+            <CheckBox Name="ShowAllCheckBox" Content="{DynamicResource ShowAll}" Margin="10" VerticalAlignment="Center" Checked="ShowAllCheckBox_Checked" Unchecked="ShowAllCheckBox_Checked"/>
+            
+            <ComboBox Name="SetLanguage" Margin="10,0,0,0" Grid.Column="1" SelectionChanged="SetLanguage_SelectionChanged" FontSize="16" SelectedIndex="0" VerticalAlignment="Center">
+                <ComboBoxItem Content="{DynamicResource Language}"></ComboBoxItem>
+                <ComboBoxItem Content="中文" Tag="zh-CN"></ComboBoxItem>
+                <ComboBoxItem Content="English" Tag="en-US"></ComboBoxItem>
+            </ComboBox>
         </StackPanel>
     </Grid>
 </Window>

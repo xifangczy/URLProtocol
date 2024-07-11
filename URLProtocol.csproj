@@ -80,6 +80,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="RegistryHelper.cs" />
+    <Page Include="i18n\zh_CN.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="i18n\en_US.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

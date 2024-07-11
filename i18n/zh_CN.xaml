@@ -1,0 +1,73 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="Title">
+        添加 URL Protocol
+    </sys:String>
+    <sys:String x:Key="Warning">
+        警告
+    </sys:String>
+    <sys:String x:Key="Information">
+        信息
+    </sys:String>
+    <sys:String x:Key="ShowAll">
+        显示所有协议
+    </sys:String>
+    <sys:String x:Key="ProtocolName">
+        协议名
+    </sys:String>
+    <sys:String x:Key="TargetProgram">
+        目标程序
+    </sys:String>
+    <sys:String x:Key="SelectTargetProgram">
+        选择目标程序
+    </sys:String>
+    <sys:String x:Key="AddOrUpdate">
+        添加/更新
+    </sys:String>
+    <sys:String x:Key="Delete">
+        删除
+    </sys:String>
+    <sys:String x:Key="AllProtocols">
+        所有已注册协议
+    </sys:String>
+    <sys:String x:Key="Language">
+        Language
+    </sys:String>
+    <sys:String x:Key="UnableOpeningRegistry">
+        无法打开注册表
+    </sys:String>
+    <sys:String x:Key="IllegalCharacters">
+        含有非法字符! 不允许包含
+    </sys:String>
+    <sys:String x:Key="TargetEmpty">
+        目标程序为空!
+    </sys:String>
+    <sys:String x:Key="ProtocolNameEmpty">
+        协议名为空!
+    </sys:String>
+    <sys:String x:Key="ProtocolNotExist">
+        协议名不存在!
+    </sys:String>
+    <sys:String x:Key="ConfirmChange">
+        确认更改!
+    </sys:String>
+    <sys:String x:Key="ConfirmDeletion">
+        确认删除!
+    </sys:String>
+    <sys:String x:Key="Parameters">
+        参数
+    </sys:String>
+    <sys:String x:Key="AddedSuccessfully">
+        添加成功
+    </sys:String>
+    <sys:String x:Key="Oneself">
+        不能选择自己
+    </sys:String>
+    <sys:String x:Key="SelectExecutable">
+        选择目标可执行程序
+    </sys:String>
+    <sys:String x:Key="AllFiles">
+        所有文件
+    </sys:String>
+</ResourceDictionary>
