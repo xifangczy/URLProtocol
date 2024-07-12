@@ -65,7 +65,7 @@
                 <ColumnDefinition Width="0.3*"/>
             </Grid.ColumnDefinitions>
             <TextBox Name="TargetProgram" Style="{StaticResource CustomTextBoxStyle}" IsReadOnly="True"/>
-            <Button x:Name="OpenFile" Click="OpenFile_Click" Content="{DynamicResource SelectTargetProgram}" Width="120" Margin="10,0,0,0" Grid.Column="1" FontSize="{StaticResource GlobalFontSize}"/>
+            <Button x:Name="OpenFile" Click="OpenFile_Click" Content="{DynamicResource SelectTargetProgram}" Width="190" Margin="10,0,0,0" Grid.Column="1" FontSize="{StaticResource GlobalFontSize}"/>
         </Grid>
 
         <TextBlock Name="Tips" Text="提示信息" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Style="{StaticResource CustomTextBlockStyle}"/>
