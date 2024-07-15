@@ -18,9 +18,6 @@ namespace URLProtocol
         {
             base.OnStartup(e);
 
-            // 多语言 获取电脑语言
-            ChangeLanguage(CultureInfo.InstalledUICulture.Name);
-
             // 检查命令行参数
             if (e.Args.Length > 0)
             {
@@ -64,6 +61,8 @@ namespace URLProtocol
             }
             else
             {
+                // 多语言 获取电脑语言
+                ChangeLanguage(CultureInfo.InstalledUICulture.Name);
                 // 没有参数，启动主窗口
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
