@@ -50,7 +50,7 @@
         Protocol does not exist!
     </sys:String>
     <sys:String x:Key="ConfirmChange">
-        Confirm the change
+        The URL Protocols already exists. Confirm changes?
     </sys:String>
     <sys:String x:Key="ConfirmDeletion">
         Confirm Deletion

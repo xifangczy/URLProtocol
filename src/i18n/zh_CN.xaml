@@ -50,7 +50,7 @@
         协议名不存在!
     </sys:String>
     <sys:String x:Key="ConfirmChange">
-        确认更改!
+        协议已存在, 确认更改?
     </sys:String>
     <sys:String x:Key="ConfirmDeletion">
         确认删除!

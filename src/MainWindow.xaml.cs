@@ -73,17 +73,15 @@ namespace URLProtocol
                                 continue;
                             }
                             string Target = commandKey.GetValue("Target") as string;
-                            if(!ShowAll && Target == null)
-                            {
-                                continue;
-                            }
+                            //if(!ShowAll && Target == null)
+                            //{
+                            //    continue;
+                            //}
                             ProtocolsDict[protocolName] = new Protocols(commandValue, Target);
                         }
                     }
                 }
-
-                AllProtocol.ItemsSource = ProtocolsDict.Keys.ToList();  // 绑定下拉菜单
-                AllProtocol.SelectedIndex = 0;  // 默认选中提示
+                RefreshComboBox(0);
             }
         }
 
@@ -136,7 +134,7 @@ namespace URLProtocol
                         commandKey.SetValue("", value);
                         commandKey.SetValue("Target", TargetProgram.Text);
                         ProtocolsDict[ProtocolName.Text] = new Protocols(value, commandKey.GetValue("Target") as string); // 添加到字典
-                        AllProtocol.ItemsSource = ProtocolsDict.Keys.ToList();  // 刷新下拉菜单
+                        RefreshComboBox();
                         Tips.Text = I18n("Parameters") + $": {value}";
                         MessageBox.Show(I18n("AddedSuccessfully"), I18n("Information"), MessageBoxButton.OK, MessageBoxImage.Information);
                     }
@@ -190,7 +188,7 @@ namespace URLProtocol
                 {
                     ClassesRootKey.DeleteSubKeyTree(ProtocolName.Text);
                     ProtocolsDict.Remove(ProtocolName.Text);    // 从字典里删除
-                    AllProtocol.ItemsSource = ProtocolsDict.Keys.ToList();  //刷新下拉菜单
+                    RefreshComboBox();
                     ProtocolName.Text = "";
                     TargetProgram.Text = "";
                     Tips.Text = "";
@@ -228,8 +226,8 @@ namespace URLProtocol
             if (ProtocolsDict.ContainsKey(ProtocolName.Text))
             {
                 AllProtocol.SelectedItem = ProtocolName.Text;
-                TargetProgram.Text = ProtocolsDict[AllProtocol.SelectedItem.ToString()].Target;
-                Tips.Text = I18n("Parameters") + ": " + ProtocolsDict[AllProtocol.SelectedItem.ToString()].Value;
+                TargetProgram.Text = ProtocolsDict[ProtocolName.Text].Target;
+                Tips.Text = I18n("Parameters") + ": " + ProtocolsDict[ProtocolName.Text].Value;
                 return;
             }
             Tips.Text = "";
@@ -260,8 +258,7 @@ namespace URLProtocol
             ProtocolsDict.Remove(firstItem.Key);
             ProtocolsDict.Add(I18n("AllProtocols"), currentProtocols);
             int index = AllProtocol.SelectedIndex;
-            AllProtocol.ItemsSource = ProtocolsDict.Keys.ToList();
-            AllProtocol.SelectedIndex = index;
+            RefreshComboBox(index);
         }
 
         private string I18n(string key)
@@ -273,6 +270,27 @@ namespace URLProtocol
         {
             ShowAll = !ShowAll;
             CheckURLProtocols();
+        }
+        private void RefreshComboBox(int index = -1)
+        {
+            string tips = ProtocolsDict.ElementAt(0).Key;
+            AllProtocol.Items.Clear();
+            AllProtocol.Items.Add(tips);
+
+            for (int i = 1; i < ProtocolsDict.Count; i++)
+            {
+                var item = ProtocolsDict.ElementAt(i);
+                if (!ShowAll && item.Value.Target == null)
+                {
+                    continue;
+                }
+                AllProtocol.Items.Add(item.Key);
+            }
+
+            if(index != -1)
+            {
+                AllProtocol.SelectedIndex = index;
+            }
         }
     }
 }
