@@ -49,6 +49,8 @@ namespace URLProtocol
                             return;
                         }
                     }
+                    // 展开环境变量
+                    parameters = Environment.ExpandEnvironmentVariables(parameters);
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
                         FileName = program, // 程序
