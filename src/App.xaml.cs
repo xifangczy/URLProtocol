@@ -2,7 +2,6 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Threading;
 using System.Web;
 using System.Windows;
 using URLProtocol.Helpers;

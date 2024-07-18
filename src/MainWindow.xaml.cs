@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -244,7 +243,7 @@ namespace URLProtocol
 
         private void SetLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(SetLanguage.SelectedIndex == 0)
+            if (SetLanguage.SelectedIndex == 0)
             {
                 return;
             }
@@ -287,7 +286,7 @@ namespace URLProtocol
                 AllProtocol.Items.Add(item.Key);
             }
 
-            if(index != -1)
+            if (index != -1)
             {
                 AllProtocol.SelectedIndex = index;
             }
