@@ -1,8 +1,21 @@
-# 使用方法
+# 自定义协议 URL Protocol ?
+系统允许开发者自定义URL协议，以便在特定应用程序或环境中启动自己。一般格式为 `{协议名}://{启动参数}`
+
+例如:
+- PotPlayer `potplayer://`
+- 微信 `weixin://`
+- Micerosoft VS Code `vscode://`
+
+等等，在浏览器打开以上协议，就能启动他们。
+
+但也有一些程序为了某些安全原因，没有开发自定义URL协议，例如 VLC 播放器。这时候就需要本项目。
+
+本项目原理为中转，把自己注册成任意协议名，再选择目标程序，打开协议后会查找对应的目标程序，处理修正参数后把参数传递给目标程序并打开。
+
+# 系统要求
 Windows 10 1709 或以系统下 需要 [.NET Framework 4.7.2](https://go.microsoft.com/fwlink/?LinkId=863262)
 
-`URLProtocol.exe` 程序本身 注册后就不能更改文件位置 否则无法成功调用。
-
+# 使用方法
 - `URLProtocol.exe` 复制到你想要调用的程序目录
 - 打开`URLProtocol.exe` 填写 协议名(不包含 "://")
 - 点击 选择目标程序 选择你要调用的exe文件
@@ -14,11 +27,24 @@ Windows 10 1709 或以系统下 需要 [.NET Framework 4.7.2](https://go.microso
 
 可以在 [cat-catch](https://github.com/xifangczy/cat-catch) 扩展里设置调用程序
 
-# Usage
+# Custom URL Protocol ?
+The system allows developers to create custom URL protocols to launch specific applications or environments. The general format is `{protocol_name}://{launch_parameters}`.
+
+For example:
+- PotPlayer: `potplayer://`
+- WeChat: `weixin://`
+- Microsoft VS Code: `vscode://`
+
+And so on. Opening these protocols in a browser will launch the corresponding applications.
+
+However, some programs do not provide custom URL protocols for security reasons, such as VLC Player. In these cases, this project becomes necessary.
+
+The principle of this project is to act as an intermediary. It registers itself as any protocol name, then selects the target application. When a protocol is opened, it looks for the corresponding target application, processes and corrects the parameters, passes the parameters to the target application, and then launches it.
+
+# System requirements
 Windows 10 1709 or later requires [.NET Framework 4.7.2](https://go.microsoft.com/fwlink/?LinkId=863262).
 
-Once the `URLProtocol.exe` program itself is registered, the file location cannot be changed, otherwise it will not be successfully called.
-
+# Usage
 - Copy `URLProtocol.exe` to the directory of the program you want to call.
 - Open `URLProtocol.exe` and fill in the protocol name (excluding "://").
 - Click Select Target Program and choose the exe file you want to call.
