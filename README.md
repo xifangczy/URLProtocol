@@ -34,7 +34,7 @@ Windows 10 1709 或以系统下 需要 [.NET Framework 4.7.2](https://go.microso
 
 # 测试
 
-再调用协议时传入 `--cat-catch-test` 打开协议时会提示最终调用的字符串, 以及选择是否继续调用.
+在调用协议时传入 `--cat-catch-test` 打开协议时会提示最终调用的字符串, 以及选择是否继续调用.
 
 # Custom URL Protocol ?
 
