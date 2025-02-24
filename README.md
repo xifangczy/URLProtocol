@@ -1,6 +1,6 @@
 # 自定义协议 URL Protocol ?
 
-系统允许开发者自定义 URL 协议，以便在特定应用程序或环境中启动自己。一般格式为 `{协议名}://{启动参数}`
+系统允许开发者自定义 URL 协议，以便在特定应用程序或环境中启动自己。一般格式为 `{协议名}:{启动参数}`
 
 例如:
 
@@ -38,7 +38,7 @@ Windows 10 1709 或以系统下 需要 [.NET Framework 4.7.2](https://go.microso
 
 # Custom URL Protocol ?
 
-The system allows developers to create custom URL protocols to launch specific applications or environments. The general format is `{protocol_name}://{launch_parameters}`.
+The system allows developers to create custom URL protocols to launch specific applications or environments. The general format is `{protocol_name}:{launch_parameters}`.
 
 For example:
 
