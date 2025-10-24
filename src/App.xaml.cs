@@ -51,7 +51,7 @@ namespace URLProtocol
                     {
                         FileName = program, // 程序
                         Arguments = parameters, // 参数
-                        WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory    // 调整工作目录
+                        WorkingDirectory = System.IO.Path.GetDirectoryName(program)    // 调整工作目录
                     };
                     Process.Start(startInfo);
                 }
