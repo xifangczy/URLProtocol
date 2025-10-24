@@ -20,7 +20,6 @@ Windows 10 1709 或以系统下 需要 [.NET Framework 4.7.2](https://go.microso
 
 # 使用方法
 
-- `URLProtocol.exe` 复制到你想要调用的程序目录
 - 打开`URLProtocol.exe` 填写 协议名(不包含 ":")
 - 点击 选择目标程序 选择你要调用的 exe 文件
 - 点击 添加/更新
@@ -58,7 +57,6 @@ Windows 10 1709 or later requires [.NET Framework 4.7.2](https://go.microsoft.co
 
 # Usage
 
-- Copy `URLProtocol.exe` to the directory of the program you want to call.
 - Open `URLProtocol.exe` and fill in the protocol name (excluding ":").
 - Click Select Target Program and choose the exe file you want to call.
 - Click Add/Update.
