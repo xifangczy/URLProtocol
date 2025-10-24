@@ -14,13 +14,19 @@
 
 本项目原理为中转，本程序能注册为任意自定义协议，通过协议打开本程序，本程序查表找到真正需要打开的程序，传递参数并启动它。
 
+# 重要说明
+
+- `URLProtocol.exe` 需要固定在一个位置，不能删除或更改，因为协议中转功能依赖该程序的位置
+- 如果移动或删除该程序，已注册的自定义协议将无法正常工作
+
 # 系统要求
 
 Windows 10 1709 或以系统下 需要 [.NET Framework 4.7.2](https://go.microsoft.com/fwlink/?LinkId=863262)
 
 # 使用方法
 
-- 打开`URLProtocol.exe` 填写 协议名(不包含 ":")
+- `URLProtocol.exe` 放入一个固定位，调用协议需要它
+- 打开 `URLProtocol.exe` 填写 协议名(不包含 ":")
 - 点击 选择目标程序 选择你要调用的 exe 文件
 - 点击 添加/更新
 
@@ -50,6 +56,11 @@ And so on. Opening these protocols in a browser will launch the corresponding ap
 However, some programs do not provide custom URL protocols for security reasons, such as VLC Player. In these cases, this project becomes necessary.
 
 The principle of this project is to act as an intermediary. It registers itself as any protocol name, then selects the target application. When a protocol is opened, it looks for the corresponding target application, processes and corrects the parameters, passes the parameters to the target application, and then launches it.
+
+# Important Notes
+
+- `URLProtocol.exe` must be kept in a fixed location and should not be deleted or moved, as the protocol forwarding functionality depends on the program's location
+- If the program is moved or deleted, the registered custom protocols will not work properly
 
 # System requirements
 
