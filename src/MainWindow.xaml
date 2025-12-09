@@ -82,6 +82,7 @@
                 <ComboBoxItem Content="{DynamicResource Language}"></ComboBoxItem>
                 <ComboBoxItem Content="中文" Tag="zh-CN"></ComboBoxItem>
                 <ComboBoxItem Content="English" Tag="en-US"></ComboBoxItem>
+                <ComboBoxItem Content="Español" Tag="es-ES"></ComboBoxItem>
             </ComboBox>
         </StackPanel>
     </Grid>
