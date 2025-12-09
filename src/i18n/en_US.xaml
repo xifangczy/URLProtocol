@@ -32,7 +32,7 @@
         All Protocols
     </sys:String>
     <sys:String x:Key="Language">
-        语言
+        Language
     </sys:String>
     <sys:String x:Key="UnableOpeningRegistry">
         Unable to open the registry
