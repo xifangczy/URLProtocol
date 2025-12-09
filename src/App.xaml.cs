@@ -79,6 +79,9 @@ namespace URLProtocol
                 case "en-US":
                     dict.Source = new Uri("i18n/en_US.xaml", UriKind.Relative);
                     break;
+                case "es-ES":
+                    dict.Source = new Uri("i18n/es_ES.xaml", UriKind.Relative);
+                    break;     
                 default:
                     dict.Source = new Uri("i18n/en_US.xaml", UriKind.Relative);
                     break;
