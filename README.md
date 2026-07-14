@@ -1,5 +1,7 @@
 # 自定义协议 URL Protocol ?
 
+[English](README.en.md) · [Español](README.es.md)
+
 系统允许开发者自定义 URL 协议，以便在特定应用程序或环境中启动自己。一般格式为 `{协议名}:{启动参数}`
 
 例如:
@@ -40,88 +42,3 @@ Windows 10 1709 或以系统下 需要 [.NET Framework 4.7.2](https://go.microso
 # 测试
 
 在调用协议时传入 `--cat-catch-test` 打开协议时会提示最终调用的字符串, 以及选择是否继续调用.
-
-# Custom URL Protocol ?
-
-The system allows developers to create custom URL protocols to launch specific applications or environments. The general format is `{protocol_name}:{launch_parameters}`.
-
-For example:
-
-- PotPlayer: `potplayer:`
-- WeChat: `weixin:`
-- Microsoft VS Code: `vscode:`
-
-And so on. Opening these protocols in a browser will launch the corresponding applications.
-
-However, some programs do not provide custom URL protocols for security reasons, such as VLC Player. In these cases, this project becomes necessary.
-
-The principle of this project is to act as an intermediary. It registers itself as any protocol name, then selects the target application. When a protocol is opened, it looks for the corresponding target application, processes and corrects the parameters, passes the parameters to the target application, and then launches it.
-
-# Important Notes
-
-- `URLProtocol.exe` must be kept in a fixed location and should not be deleted or moved, as the protocol forwarding functionality depends on the program's location
-- If the program is moved or deleted, the registered custom protocols will not work properly
-
-# System requirements
-
-Windows 10 1709 or later requires [.NET Framework 4.7.2](https://go.microsoft.com/fwlink/?LinkId=863262).
-
-# Usage
-
-- Open `URLProtocol.exe` and fill in the protocol name (excluding ":").
-- Click Select Target Program and choose the exe file you want to call.
-- Click Add/Update.
-
-Test whether the addition is successful:
-
-- Try opening your custom protocol with `:` in the browser address bar (e.g., test:).
-- Check if the target program opens normally.
-
-You can set up the calling program in the [cat-catch](https://github.com/xifangczy/cat-catch) extension.
-
-# Test
-
-When calling the protocol, pass in `--cat-catch-test` to display the final call string and choose whether to continue the call.
-
-# Protocolo personal URL ?
-
-El sistema permite a los desarrolladores crear protocolos URL personales para iniciar aplicaciones o entornos específicos. El formato general es `{protocol_name}:{launch_parameters}`.
-
-Por ejemplo:
-
-- PotPlayer: `potplayer:`
-- WeChat: `weixin:`
-- Microsoft VS Code: `vscode:`
-
-Y así sucesivamente. Al abrir estos protocolos en un navegador, se iniciarán las aplicaciones correspondientes.
-
-Sin embargo, algunos programas no proporcionan protocolos de URL personales por razones de seguridad, como VLC Player. En estos casos, este proyecto se hace necesario.
-
-El principio de este proyecto es actuar como intermediario. Se registra como cualquier nombre de protocolo y, a continuación, selecciona la aplicación de destino. Cuando se abre un protocolo, busca la aplicación de destino correspondiente, procesa y corrige los parámetros, pasa los parámetros a la aplicación de destino y, a continuación, la inicia.
-
-# Notas importantes
-
-- `URLProtocol.exe` debe mantenerse en una ubicación fija y no debe borrarse ni moverse, ya que la funcionalidad de reenvío de protocolos depende de la ubicación del programa
-- Si se traslada o elimina el programa, los protocolos personales registrados no funcionarán correctamente.
-
-# Requisitos del sistema
-
-Windows 10 1709 o posterior requiere [.NET Framework 4.7.2](https://go.microsoft.com/fwlink/?LinkId=863262).
-
-# Uso
-
-- Abrir `URLProtocol.exe` e introduzca el nombre del protocolo (excluyendo ":").
-- Haga clic en Seleccionar programa de destino y seleccionar el archivo exe que desea llamar.
-- Clic en Confirmar.
-
-Comprobar si se ha realizado correctamente:
-
-- Pruebe a abrir su protocolo personal con `:` en la barra de direcciones del navegador (ej., test:).
-- Compruebe si el programa de destino se abre con normalidad.
-
-Puede configurar el programa de llamada en la extensión [cat-catch](https://github.com/xifangczy/cat-catch).
-
-# Prueba
-
-Al llamar al protocolo, introduzca `--cat-catch-test` para mostrar la cadena de llamada final y seleccionar si continuar la llamada.
-
