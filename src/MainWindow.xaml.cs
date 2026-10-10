@@ -160,7 +160,13 @@ namespace URLProtocol
                     MessageBox.Show(I18n("Oneself"), I18n("Warning"), MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                TargetProgram.Text = openFileDialog.FileName;
+                string path = openFileDialog.FileName;
+                // 路径包含空格时加引号，避免与后面添加的参数混淆
+                if (path.Contains(" "))
+                {
+                    path = "\"" + path + "\"";
+                }
+                TargetProgram.Text = path;
             }
         }
 

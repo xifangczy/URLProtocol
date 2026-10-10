@@ -18,6 +18,49 @@
             }
             return (null, url);
         }
+        // 解析命令行字符串，返回 (可执行程序路径, 附加参数)
+        public static (string, string) ParseProgramAndArgs(string commandLine)
+        {
+            if (string.IsNullOrWhiteSpace(commandLine))
+            {
+                return (commandLine, string.Empty);
+            }
+
+            commandLine = commandLine.Trim();
+
+            string program;
+            string args = string.Empty;
+
+            if (commandLine.StartsWith("\""))
+            {
+                int endQuote = commandLine.IndexOf('"', 1);
+                if (endQuote == -1)
+                {
+                    program = commandLine.Substring(1);
+                }
+                else
+                {
+                    program = commandLine.Substring(1, endQuote - 1);
+                    args = commandLine.Substring(endQuote + 1).Trim();
+                }
+            }
+            else
+            {
+                int firstSpace = commandLine.IndexOf(' ');
+                if (firstSpace == -1)
+                {
+                    program = commandLine;
+                }
+                else
+                {
+                    program = commandLine.Substring(0, firstSpace);
+                    args = commandLine.Substring(firstSpace + 1).Trim();
+                }
+            }
+
+            return (program, args);
+        }
+
         // 检查协议名是否包含无效字符
         public static bool CheckProtocolName(string ProtocolName)
         {

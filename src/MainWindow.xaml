@@ -64,7 +64,7 @@
                 <ColumnDefinition Width="0.7*"/>
                 <ColumnDefinition Width="0.3*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Name="TargetProgram" Style="{StaticResource CustomTextBoxStyle}" IsReadOnly="True"/>
+            <TextBox Name="TargetProgram" Style="{StaticResource CustomTextBoxStyle}"/>
             <Button x:Name="OpenFile" Click="OpenFile_Click" Content="{DynamicResource SelectTargetProgram}" Width="190" Margin="10,0,0,0" Grid.Column="1" FontSize="{StaticResource GlobalFontSize}"/>
         </Grid>
 

@@ -26,9 +26,12 @@ namespace URLProtocol
                 (string protocol, string parameters) = RegistryHelper.ExtractProtocolAndRemove(decodedUrl);
 
                 // 根据协议名查找到 目标程序 加上参数运行
-                string program = (string)Registry.GetValue($@"HKEY_CLASSES_ROOT\{protocol}\shell\open\command", "Target", null);
-                if (program != null)
+                string target = (string)Registry.GetValue($@"HKEY_CLASSES_ROOT\{protocol}\shell\open\command", "Target", null);
+                if (target != null)
                 {
+                    // 解析出可执行程序路径和附加参数（例如 "C:\...\Zed.exe" --foo --bar）
+                    (string program, string extraArgs) = RegistryHelper.ParseProgramAndArgs(target);
+
                     // 去除末尾的 "/" 也许 URL protocol 以网址调用时被添加的
                     if (parameters.EndsWith("/"))
                     {
@@ -39,7 +42,7 @@ namespace URLProtocol
                     if (test != -1)
                     {
                         parameters = parameters.Remove(test, "--cat-catch-test".Length);
-                        if (MessageBox.Show($"\"{program}\" {parameters}", "Continue?", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
+                        if (MessageBox.Show($"\"{target}\" {parameters}", "Continue?", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
                         {
                             Shutdown();
                             return;
@@ -47,10 +50,16 @@ namespace URLProtocol
                     }
                     // 展开环境变量
                     parameters = Environment.ExpandEnvironmentVariables(parameters);
+
+                    // 合并附加参数 与 URL 传入的参数
+                    string arguments = string.IsNullOrWhiteSpace(extraArgs)
+                        ? parameters
+                        : extraArgs + " " + parameters;
+
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
                         FileName = program, // 程序
-                        Arguments = parameters, // 参数
+                        Arguments = arguments, // 参数
                         WorkingDirectory = System.IO.Path.GetDirectoryName(program)    // 调整工作目录
                     };
                     Process.Start(startInfo);
